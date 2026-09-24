@@ -3,10 +3,13 @@ const express = require('express');
 const http = require('http');
 const { Server } = require('socket.io');
 
-const client = net.createConnection({ host: '10.0.0.74', port: 60604 });
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server, { cors: { origin: '*' } });
+
+app.use(express.json());
+
+let client = null;
 
 function parseSample(raw) {
   return {
@@ -21,13 +24,28 @@ function parseSample(raw) {
   };
 }
 
-client.on('data', (chunk) => {
-  try {
-    const sensorData = parseSample(JSON.parse(chunk.toString()));
-    io.emit('sensorData', sensorData); // push to all connected clients
-  } catch (err) {
-    console.error('bad JSON:', chunk.toString(), err);
-  }
+app.post('/api/submit', (req, res) => {
+  const { ip, port } = req.body;
+
+  if (client) client.destroy(); // drop any previous connection
+
+  client = net.createConnection({ host: ip, port: Number(port) });
+
+  client.once('connect', () => res.json({ ok: true }));
+  client.once('error', (err) => {
+    if (!res.headersSent) res.status(502).json({ ok: false, error: err.message });
+  });
+
+  client.on('data', (chunk) => {
+    try {
+      const sensorData = parseSample(JSON.parse(chunk.toString()));
+      io.emit('sensorData', sensorData);
+    } catch (err) {
+      console.error('bad JSON:', chunk.toString(), err);
+    }
+  });
+
+  client.on('error', (err) => console.error('tcp error:', err.message));
 });
 
 server.listen(5000, () => console.log('Server on 127.0.0.1:5000'));

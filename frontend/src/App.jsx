@@ -1,31 +1,21 @@
-import { useState, useEffect } from 'react'
-import { io } from 'socket.io-client'
 import './App.css'
+import InfoAddr from './components/GetSensorLog';
+import DisplayInfomration from './components/DisplayInformation';
+import { Box, Stack } from '@mui/material';
+import PlotGPS from './components/PlotGPS';
 
-const socket = io('http://localhost:5000');
 
 function App() {
-  const [sensorData, setSensorData] = useState(null);
-
-  useEffect(() => {
-    socket.on('sensorData', (data) => {
-      setSensorData(data);
-    });
-
-    return () => {
-      socket.off('sensorData');
-    };
-  }, []);
-
-  return (
+  return(
     <div>
-      {sensorData ? (
-        <pre>{JSON.stringify(sensorData, null, 2)}</pre>
-      ) : (
-        <p>Waiting for data...</p>
-      )}
+        <Box sx={{ margin : 4 }}>
+          <Stack spacing={8}>
+            <InfoAddr></InfoAddr>
+            <PlotGPS></PlotGPS>
+            <DisplayInfomration></DisplayInfomration>
+          </Stack>
+        </Box>
     </div>
   );
 }
-
 export default App
