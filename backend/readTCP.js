@@ -19,6 +19,9 @@ function parseSample(raw) {
     accelTimestamp: parseFloat(raw.accelerometerTimestamp_sinceReboot),
     deviceID: raw.deviceID,
     label: parseInt(raw.label, 10),
+    latitude: parseFloat(raw.locationLatitude),
+    longitude: parseFloat(raw.locationLongitude),
+    speed: parseFloat(raw.locationSpeed),
     loggingSample: parseInt(raw.loggingSample, 10),
     loggingTime: new Date(raw.loggingTime)
   };

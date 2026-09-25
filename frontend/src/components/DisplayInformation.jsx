@@ -24,16 +24,19 @@ function DisplayInformation() {
       {sensorData ? (
         <Grid container spacing={4}>
             <Grid size={6}>
-                <DataCard dataName={"Acceleration in X"} data={sensorData?.accelX}></DataCard>
+                <DataCard dataName={"Acceleration in X"} data={sensorData?.accelX} packetID={sensorData?.loggingSample}></DataCard>
             </Grid>
             <Grid size={6}>
-                <DataCard dataName={"Acceleration in Y"} data={sensorData?.accelY}></DataCard>
+                <DataCard dataName={"Acceleration in Y"} data={sensorData?.accelY} packetID={sensorData?.loggingSample}></DataCard>
             </Grid>
             <Grid size={6}>
-                <DataCard dataName={"Acceleration in Z"} data={sensorData?.accelZ}></DataCard>
+                <DataCard dataName={"Acceleration in Z"} data={sensorData?.accelZ} packetID={sensorData?.loggingSample}></DataCard>
             </Grid>
             <Grid size={6}>
-                <DataCard dataName={"Acceleration in X"} data={sensorData?.accelX}></DataCard>
+                <DataCard dataName={"latitude"} data={sensorData?.latitude}></DataCard>
+            </Grid>
+            <Grid size={6}>
+                <DataCard dataName={"longitude"} data={sensorData?.longitude}></DataCard>
             </Grid>
         </Grid>
       ) : (
