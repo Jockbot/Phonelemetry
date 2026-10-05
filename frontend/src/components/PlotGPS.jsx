@@ -53,6 +53,14 @@ function PlotGPS() {
           <Typography variant="caption">Points</Typography>
           <Typography variant="h6">{path.length}</Typography>
         </Box>
+        <Box>
+          <Typography variant="caption">Latitude</Typography>
+          <Typography variant="h6">{end ? end[0].toFixed(6) : '—'}</Typography>
+        </Box>
+        <Box>
+          <Typography variant="caption">Longitude</Typography>
+          <Typography variant="h6">{end ? end[1].toFixed(6) : '—'}</Typography>
+        </Box>
       </Box>
 
       <MapContainer
